@@ -1,0 +1,59 @@
+@startuml
+skinparam actorStyle awesome
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Student\n(COE-3-3C72)" as Student
+actor "Contributor / Senior" as Contributor
+actor "CR (Batch Rep)" as CR
+actor "Moderator" as Moderator
+actor "Gemini LLM / System" as AI
+
+rectangle "TIET Smart Exam-Prep Platform (UCS503)" {
+  usecase "Login via @thapar.edu" as UC_Login
+  usecase "View Batch Calendar\n& Exam Countdown" as UC_Cal
+  usecase "Explore Question Bank\n(Filter by MST/EST/Topic)" as UC_QB
+  usecase "Practice Mode (Self-Grade)" as UC_Practice
+  usecase "Timed 30-Min Mock Quiz" as UC_Quiz
+  usecase "Analyze Topic Weightage\n& Historical Trends" as UC_Weightage
+  usecase "Interact with AI Assistant\n(TIET-GPT with Citations)" as UC_Assistant
+  usecase "Participate in Public Forum\n& Live Crunch Chat" as UC_Forum
+  
+  usecase "Upload Course Material\n(Slides & Exam Papers)" as UC_Upload
+  
+  usecase "Review Ingestion Queue\n(Approve/Reject Questions)" as UC_ModReview
+  usecase "Verify Solutions\n(Badge: Verified by Senior)" as UC_VerifySol
+  usecase "Moderate Forum (Pin/Lock/Report)" as UC_ModForum
+  
+  usecase "Schedule Batch Event / Lab Eval" as UC_CREvent
+  
+  usecase "OCR / Parse & Chunk Docs" as UC_Parse
+  usecase "Generate Embeddings (pgvector)" as UC_Embed
+  usecase "Calculate Deterministic Stats" as UC_Stats
+}
+
+Student --> UC_Login
+Student --> UC_Cal
+Student --> UC_QB
+Student --> UC_Practice
+Student --> UC_Quiz
+Student --> UC_Weightage
+Student --> UC_Assistant
+Student --> UC_Forum
+
+Contributor --> UC_Upload
+
+CR --> UC_CREvent
+
+Moderator --> UC_ModReview
+Moderator --> UC_VerifySol
+Moderator --> UC_ModForum
+
+UC_Upload ..> UC_Parse : <<triggers>>
+UC_Parse ..> UC_ModReview : <<queues into>>
+UC_ModReview ..> UC_Embed : <<upon approval>>
+UC_ModReview ..> UC_Stats : <<recomputes>>
+UC_Assistant ..> AI : <<RAG query>>
+UC_Quiz ..> UC_QB : <<draws from>>
+UC_Cal ..> UC_Assistant : <<deep links into>>
+@enduml

@@ -1,0 +1,23 @@
+{
+  "systemPrompt": "You are an expert exam paper analyzer and parser for Thapar Institute of Engineering and Technology (TIET), Patiala. Your task is to segment past exam papers (MST, EST, Quizzes, Sessionals) into individual questions, extract exact marks, determine question type and difficulty, assign topic tags from the curriculum, and draft a high-quality step-by-step solution using KaTeX for mathematical notation.",
+  "userPromptTemplate": "Extract all distinct questions and subparts from this TIET exam paper content for course {courseCode} ({courseName}).\nExam Type: {evalType}, Year: {year}\n\nDocument Text:\n{documentText}",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "questions": {
+        "type": "array",
+        "items": {
+          "questionNumber": "string (e.g. Q1(a), Q2, Q3(b))",
+          "text": "string (Question prompt in Markdown, with KaTeX for math formulas)",
+          "marks": "number (explicit marks allocated, e.g. 5 or 10)",
+          "type": "string (one of: MCQ, SHORT, LONG, NUMERICAL, CODING)",
+          "difficulty": "string (one of: EASY, MEDIUM, HARD)",
+          "topicTags": "array of strings (e.g. ['Agile Scrum', 'Sprint Planning'])",
+          "suggestedSolution": "string (Step-by-step model solution with clear headings and KaTeX math)",
+          "confidence": "number between 0.0 and 1.0 (parsing clarity)"
+        }
+      }
+    },
+    "required": ["questions"]
+  }
+}

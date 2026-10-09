@@ -1,0 +1,92 @@
+<mxfile host="app.diagrams.net" modified="2026-10-09T03:00:00.000Z" agent="Antigravity" version="21.0.0" type="device">
+  <diagram id="dfd" name="Data Flow Diagram (Level 1)">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- External Entities (Rectangles) -->
+        <mxCell id="e_student" value="Student&#xa;(COE-3-3C72)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#2563eb;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="240" width="130" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_contrib" value="Contributor / Senior" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fef3c7;strokeColor=#d97706;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="520" width="130" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_mod" value="Moderator / CR" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fee2e2;strokeColor=#dc2626;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="380" width="130" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_llm" value="Gemini LLM API" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f3e8ff;strokeColor=#9333ea;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="160" width="130" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Processes (Circles / Rounded) -->
+        <mxCell id="p1" value="1.0&#xa;Auth &amp; Batch Context&#xa;Filtering" style="rounded=1;arcSize=40;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="100" width="160" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="p2" value="2.0&#xa;Ingestion, OCR &amp;&#xa;Auto-Tagging" style="rounded=1;arcSize=40;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="520" width="160" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="p3" value="3.0&#xa;Moderator Review &amp;&#xa;Queue Verification" style="rounded=1;arcSize=40;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="540" y="520" width="160" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="p4" value="4.0&#xa;Embedding &amp; Deterministic&#xa;Analytics Engine" style="rounded=1;arcSize=40;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="780" y="520" width="170" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="p5" value="5.0&#xa;Question Bank &amp;&#xa;Practice Runner" style="rounded=1;arcSize=40;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="240" width="160" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="p6" value="6.0&#xa;Hybrid Retrieval &amp;&#xa;Grounded Assistant" style="rounded=1;arcSize=40;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="540" y="240" width="160" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="p7" value="7.0&#xa;Academic Calendar&#xa;&amp; Forum Engine" style="rounded=1;arcSize=40;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="380" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Data Stores (Open-ended rects / cylinders) -->
+        <mxCell id="d1" value="D1: Users, Batches &amp; Enrollments" style="shape=partialRectangle;top=0;bottom=0;fillColor=#f8fafc;strokeColor=#475569;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="40" width="220" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="d2" value="D2: Raw Uploads / PDF Storage" style="shape=partialRectangle;top=0;bottom=0;fillColor=#f8fafc;strokeColor=#475569;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="670" width="220" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="d3" value="D3: Questions &amp; Embeddings (pgvector)" style="shape=partialRectangle;top=0;bottom=0;fillColor=#f8fafc;strokeColor=#475569;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="750" y="340" width="230" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="d4" value="D4: Topic Weightages &amp; Pattern Reports" style="shape=partialRectangle;top=0;bottom=0;fillColor=#f8fafc;strokeColor=#475569;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="750" y="430" width="230" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="d5" value="D5: Calendar Events &amp; Forum Threads" style="shape=partialRectangle;top=0;bottom=0;fillColor=#f8fafc;strokeColor=#475569;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="390" width="220" height="35" as="geometry"/>
+        </mxCell>
+
+        <!-- Data Flows -->
+        <mxCell id="df1" edge="1" parent="1" source="e_student" target="p1" style="endArrow=classic;html=1;value=Credentials;"/>
+        <mxCell id="df2" edge="1" parent="1" source="p1" target="d1" style="endArrow=classic;html=1;value=Batch Info;"/>
+        
+        <mxCell id="df3" edge="1" parent="1" source="e_contrib" target="p2" style="endArrow=classic;html=1;value=PDF Papers;"/>
+        <mxCell id="df4" edge="1" parent="1" source="p2" target="d2" style="endArrow=classic;html=1;value=Raw Files;"/>
+        <mxCell id="df5" edge="1" parent="1" source="p2" target="p3" style="endArrow=classic;html=1;value=Parsed Questions;"/>
+        
+        <mxCell id="df6" edge="1" parent="1" source="e_mod" target="p3" style="endArrow=classic;html=1;value=Approval / Tag Edits;"/>
+        <mxCell id="df7" edge="1" parent="1" source="p3" target="p4" style="endArrow=classic;html=1;value=Verified Items;"/>
+        <mxCell id="df8" edge="1" parent="1" source="p4" target="d3" style="endArrow=classic;html=1;value=Vectors &amp; Chunks;"/>
+        <mxCell id="df9" edge="1" parent="1" source="p4" target="d4" style="endArrow=classic;html=1;value=SQL Aggregates;"/>
+
+        <mxCell id="df10" edge="1" parent="1" source="e_student" target="p5" style="endArrow=classic;html=1;value=Filters &amp; Practice;"/>
+        <mxCell id="df11" edge="1" parent="1" source="d3" target="p5" style="endArrow=classic;html=1;value=Real PYQs;"/>
+        
+        <mxCell id="df12" edge="1" parent="1" source="e_student" target="p6" style="endArrow=classic;html=1;value=Doubt / Q&amp;A;"/>
+        <mxCell id="df13" edge="1" parent="1" source="d3" target="p6" style="endArrow=classic;html=1;value=Vector Match;"/>
+        <mxCell id="df14" edge="1" parent="1" source="d4" target="p6" style="endArrow=classic;html=1;value=Precomputed Stats;"/>
+        <mxCell id="df15" edge="1" parent="1" source="p6" target="e_llm" style="endArrow=classic;html=1;value=Grounded Prompt;"/>
+        <mxCell id="df16" edge="1" parent="1" source="e_llm" target="p6" style="endArrow=classic;html=1;value=Cited Content;"/>
+        <mxCell id="df17" edge="1" parent="1" source="p6" target="e_student" style="endArrow=classic;html=1;value=Grounded Response;"/>
+
+        <mxCell id="df18" edge="1" parent="1" source="e_mod" target="p7" style="endArrow=classic;html=1;value=Add Lab/Exam;"/>
+        <mxCell id="df19" edge="1" parent="1" source="p7" target="d5" style="endArrow=classic;html=1;value=Events &amp; Posts;"/>
+        <mxCell id="df20" edge="1" parent="1" source="d5" target="e_student" style="endArrow=classic;html=1;value=Filtered Calendar;"/>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

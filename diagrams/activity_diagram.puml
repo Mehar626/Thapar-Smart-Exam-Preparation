@@ -1,0 +1,38 @@
+@startuml
+start
+:Contributor uploads PDF (PYQ / Slide);
+:Server validates MIME type & size (<= 25MB);
+
+if (Valid PDF?) then (yes)
+  :Store file locally in storage;
+  :Parser extracts raw text & section boundaries;
+  :Split exam paper into individual questions & subparts;
+  :LLM auto-tags (Course, Topic, Marks, EvalType, Year);
+  :Stage questions in 'PENDING_REVIEW' state;
+  
+  |Moderator (/admin)|
+  :Moderator inspects parsed questions in Review Queue;
+  if (Tags & Marks Accurate?) then (needs edit)
+    :Moderator modifies topic tags or marks;
+  else (rejected)
+    :Moderator rejects with reason;
+    stop
+  endif
+  
+  :Moderator clicks 'Approve';
+  
+  |Background System|
+  :Generate pgvector Embeddings (text-embedding-004);
+  :Save vectors to PostgreSQL Document/Question tables;
+  :Recompute TopicWeightage & historical stats in SQL;
+  :Update Pattern Analysis report;
+  :Make questions live in Question Bank;
+  
+  |Student|
+  :Questions searchable and available for Practice;
+  stop
+else (no)
+  :Return Upload Error;
+  stop
+endif
+@enduml

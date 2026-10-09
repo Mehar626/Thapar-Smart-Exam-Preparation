@@ -1,0 +1,172 @@
+<mxfile host="app.diagrams.net" modified="2026-10-09T03:15:00.000Z" agent="Antigravity" version="21.0.0" type="device">
+  <diagram id="activity_fixed" name="Activity Diagram - Ingestion &amp; Moderation">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Swimlanes Container -->
+        <mxCell id="pool" value="Course Ingestion &amp; Moderator Verification Workflow (UCS503)" style="shape=swimlane;whiteSpace=wrap;html=1;startSize=30;fillColor=#f8fafc;strokeColor=#475569;fontStyle=1;fontSize=14;align=center;" vertex="1" parent="1">
+          <mxGeometry x="50" y="30" width="1050" height="980" as="geometry"/>
+        </mxCell>
+
+        <!-- Swimlane 1: Contributor -->
+        <mxCell id="lane1" value="Contributor / Senior" style="shape=swimlane;whiteSpace=wrap;html=1;startSize=30;fillColor=#fffbeb;strokeColor=#f59e0b;fontStyle=1;align=center;" vertex="1" parent="pool">
+          <mxGeometry x="0" y="30" width="300" height="950" as="geometry"/>
+        </mxCell>
+
+        <!-- Swimlane 2: System -->
+        <mxCell id="lane2" value="System Ingestion Pipeline" style="shape=swimlane;whiteSpace=wrap;html=1;startSize=30;fillColor=#eff6ff;strokeColor=#3b82f6;fontStyle=1;align=center;" vertex="1" parent="pool">
+          <mxGeometry x="300" y="30" width="450" height="950" as="geometry"/>
+        </mxCell>
+
+        <!-- Swimlane 3: Moderator -->
+        <mxCell id="lane3" value="Moderator (/admin Queue)" style="shape=swimlane;whiteSpace=wrap;html=1;startSize=30;fillColor=#fef2f2;strokeColor=#ef4444;fontStyle=1;align=center;" vertex="1" parent="pool">
+          <mxGeometry x="750" y="30" width="300" height="950" as="geometry"/>
+        </mxCell>
+
+        <!-- LANE 1 NODES (Contributor) -->
+        <mxCell id="n_start" value="" style="ellipse;fillColor=#0f172a;strokeColor=#0f172a;" vertex="1" parent="lane1">
+          <mxGeometry x="135" y="50" width="30" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="act_upload" value="Upload PDF Document&#xa;(Lecture Slide / PYQ Paper)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d97706;fontStyle=1;" vertex="1" parent="lane1">
+          <mxGeometry x="50" y="110" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="act_fix_upload" value="Correct File &amp; Re-upload" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d97706;" vertex="1" parent="lane1">
+          <mxGeometry x="50" y="200" width="200" height="45" as="geometry"/>
+        </mxCell>
+
+        <!-- LANE 2 NODES (System) -->
+        <mxCell id="act_validate" value="Validate File Signature,&#xa;MIME &amp; Size (≤ 25MB)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;fontStyle=1;" vertex="1" parent="lane2">
+          <mxGeometry x="125" y="110" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="dec_valid" value="Format &amp;&#xa;Size OK?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#2563eb;fontStyle=1;" vertex="1" parent="lane2">
+          <mxGeometry x="170" y="190" width="110" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="act_extract" value="PDF Native Text Extraction&#xa;&amp; Section Boundary Detection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;" vertex="1" parent="lane2">
+          <mxGeometry x="125" y="285" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="act_split" value="Segment into Sub-Questions&#xa;or Individual Slide Chunks" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;" vertex="1" parent="lane2">
+          <mxGeometry x="125" y="360" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="act_tag" value="LLM Auto-Tagging&#xa;(Topic, Marks, EvalType, Year)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;" vertex="1" parent="lane2">
+          <mxGeometry x="125" y="435" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="act_stage" value="Stage in DB with Status:&#xa;'PENDING_REVIEW'" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;fontStyle=1;" vertex="1" parent="lane2">
+          <mxGeometry x="125" y="510" width="200" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- LANE 3 NODES (Moderator) -->
+        <mxCell id="act_queue" value="Review Items in Moderator&#xa;Review Queue (/admin)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#dc2626;fontStyle=1;" vertex="1" parent="lane3">
+          <mxGeometry x="50" y="510" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="dec_mod" value="Moderator&#xa;Decision?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fee2e2;strokeColor=#dc2626;fontStyle=1;" vertex="1" parent="lane3">
+          <mxGeometry x="90" y="590" width="120" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="act_edit" value="Edit Question Tags, Marks,&#xa;or Re-assign Course Unit" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#dc2626;" vertex="1" parent="lane3">
+          <mxGeometry x="50" y="690" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="act_reject" value="Reject Submission with&#xa;Reason Logged &amp; Archive" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#dc2626;" vertex="1" parent="lane3">
+          <mxGeometry x="50" y="770" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="end_reject" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#dc2626;" vertex="1" parent="lane3">
+          <mxGeometry x="135" y="855" width="30" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- BACK TO LANE 2 (Post-Approval Pipeline) -->
+        <mxCell id="act_embed" value="Generate Embeddings (pgvector)&#xa;using text-embedding-004" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;fontStyle=1;" vertex="1" parent="lane2">
+          <mxGeometry x="125" y="690" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="act_stats" value="Deterministically Recalculate&#xa;Topic Weightage in SQL" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;" vertex="1" parent="lane2">
+          <mxGeometry x="125" y="770" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="act_publish" value="Publish to Live Question Bank&#xa;&amp; AI Assistant Context Corpus" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dcfce7;strokeColor=#16a34a;fontStyle=1;" vertex="1" parent="lane2">
+          <mxGeometry x="125" y="845" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="end_success" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#16a34a;" vertex="1" parent="lane2">
+          <mxGeometry x="210" y="915" width="30" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- ROOT CONNECTORS (Coordinates aligned across swimlanes) -->
+        <!-- Start -> Upload -->
+        <mxCell id="e1" edge="1" parent="pool" source="n_start" target="act_upload" style="endArrow=classic;html=1;strokeColor=#475569;strokeWidth=1.5;"/>
+        
+        <!-- Upload -> Validate -->
+        <mxCell id="e2" edge="1" parent="pool" source="act_upload" target="act_validate" style="endArrow=classic;html=1;strokeColor=#475569;strokeWidth=1.5;"/>
+        
+        <!-- Validate -> Decision Valid -->
+        <mxCell id="e3" edge="1" parent="pool" source="act_validate" target="dec_valid" style="endArrow=classic;html=1;strokeColor=#475569;strokeWidth=1.5;"/>
+        
+        <!-- Decision Valid -> Re-upload (No) -->
+        <mxCell id="e4_no" edge="1" parent="pool" source="dec_valid" target="act_fix_upload" style="endArrow=classic;html=1;strokeColor=#dc2626;strokeWidth=1.5;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e4_no_label" value="[No: Invalid]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="e4_no">
+          <mxGeometry x="-0.2" y="2" relative="1" as="geometry"><mxPoint as="offset" y="-8"/></mxGeometry>
+        </mxCell>
+
+        <!-- Re-upload loop back -->
+        <mxCell id="e4_loop" edge="1" parent="pool" source="act_fix_upload" target="act_upload" style="endArrow=classic;html=1;strokeColor=#d97706;strokeWidth=1.5;"/>
+
+        <!-- Decision Valid -> Extract (Yes) -->
+        <mxCell id="e5_yes" edge="1" parent="pool" source="dec_valid" target="act_extract" style="endArrow=classic;html=1;strokeColor=#16a34a;strokeWidth=1.5;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e5_yes_label" value="[Yes: Valid]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="e5_yes">
+          <mxGeometry x="-0.1" y="2" relative="1" as="geometry"><mxPoint x="32" y="-1"/></mxGeometry>
+        </mxCell>
+
+        <!-- Extraction pipeline chain -->
+        <mxCell id="e6" edge="1" parent="pool" source="act_extract" target="act_split" style="endArrow=classic;html=1;strokeColor=#475569;strokeWidth=1.5;"/>
+        <mxCell id="e7" edge="1" parent="pool" source="act_split" target="act_tag" style="endArrow=classic;html=1;strokeColor=#475569;strokeWidth=1.5;"/>
+        <mxCell id="e8" edge="1" parent="pool" source="act_tag" target="act_stage" style="endArrow=classic;html=1;strokeColor=#475569;strokeWidth=1.5;"/>
+
+        <!-- Stage -> Moderator Review Queue -->
+        <mxCell id="e9" edge="1" parent="pool" source="act_stage" target="act_queue" style="endArrow=classic;html=1;strokeColor=#dc2626;strokeWidth=2;"/>
+        
+        <!-- Queue -> Decision Mod -->
+        <mxCell id="e10" edge="1" parent="pool" source="act_queue" target="dec_mod" style="endArrow=classic;html=1;strokeColor=#475569;strokeWidth=1.5;"/>
+
+        <!-- Decision Mod -> Edit -->
+        <mxCell id="e11_edit" edge="1" parent="pool" source="dec_mod" target="act_edit" style="endArrow=classic;html=1;strokeColor=#d97706;strokeWidth=1.5;"/>
+        <mxCell id="e11_edit_label" value="[Needs Correction]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="e11_edit">
+          <mxGeometry x="-0.1" y="2" relative="1" as="geometry"><mxPoint x="45" y="1"/></mxGeometry>
+        </mxCell>
+
+        <!-- Edit -> Embed -->
+        <mxCell id="e12_edited" edge="1" parent="pool" source="act_edit" target="act_embed" style="endArrow=classic;html=1;strokeColor=#16a34a;strokeWidth=1.5;"/>
+
+        <!-- Decision Mod -> Direct Approve to Embed -->
+        <mxCell id="e13_app" edge="1" parent="pool" source="dec_mod" target="act_embed" style="endArrow=classic;html=1;strokeColor=#16a34a;strokeWidth=2;">
+          <Array as="points">
+            <mxPoint x="730" y="625"/>
+            <mxPoint x="730" y="715"/>
+          </Array>
+        </mxCell>
+        <mxCell id="e13_app_label" value="[Approved As Is]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="e13_app">
+          <mxGeometry x="-0.2" y="2" relative="1" as="geometry"><mxPoint x="-35" y="-10"/></mxGeometry>
+        </mxCell>
+
+        <!-- Decision Mod -> Reject -->
+        <mxCell id="e14_rej" edge="1" parent="pool" source="dec_mod" target="act_reject" style="endArrow=classic;html=1;strokeColor=#dc2626;strokeWidth=1.5;">
+          <Array as="points">
+            <mxPoint x="980" y="625"/>
+            <mxPoint x="980" y="795"/>
+          </Array>
+        </mxCell>
+        <mxCell id="e14_rej_label" value="[Rejected]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="e14_rej">
+          <mxGeometry x="-0.1" y="2" relative="1" as="geometry"><mxPoint x="28" y="-12"/></mxGeometry>
+        </mxCell>
+
+        <!-- Reject -> End Reject -->
+        <mxCell id="e15" edge="1" parent="pool" source="act_reject" target="end_reject" style="endArrow=classic;html=1;strokeColor=#dc2626;strokeWidth=1.5;"/>
+
+        <!-- Post-Approval Flow: Embed -> Stats -> Publish -> End -->
+        <mxCell id="e16" edge="1" parent="pool" source="act_embed" target="act_stats" style="endArrow=classic;html=1;strokeColor=#475569;strokeWidth=1.5;"/>
+        <mxCell id="e17" edge="1" parent="pool" source="act_stats" target="act_publish" style="endArrow=classic;html=1;strokeColor=#475569;strokeWidth=1.5;"/>
+        <mxCell id="e18" edge="1" parent="pool" source="act_publish" target="end_success" style="endArrow=classic;html=1;strokeColor=#16a34a;strokeWidth=2;"/>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

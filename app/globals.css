@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Design Tokens ─────────────────────────────────────────────────────── */
+/* TIET-flavoured theme — original branding, not copied from official TIET site */
+
+@layer base {
+  :root {
+    /* Light mode */
+    --background: 210 20% 98%;
+    --foreground: 224 71% 4%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
+
+    /* Deep navy — primary brand colour */
+    --primary: 224 61% 28%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 39% 11%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+
+    /* Amber — accent / highlight */
+    --accent: 38 92% 50%;
+    --accent-foreground: 224 71% 4%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 224 61% 28%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Dark mode */
+    --background: 222 47% 7%;
+    --foreground: 210 40% 95%;
+
+    --card: 222 40% 10%;
+    --card-foreground: 210 40% 95%;
+
+    --popover: 222 40% 10%;
+    --popover-foreground: 210 40% 95%;
+
+    /* Lighter navy in dark mode */
+    --primary: 213 80% 62%;
+    --primary-foreground: 222 47% 7%;
+
+    --secondary: 222 40% 15%;
+    --secondary-foreground: 210 40% 95%;
+
+    --muted: 222 40% 13%;
+    --muted-foreground: 215 16% 57%;
+
+    --accent: 38 92% 50%;
+    --accent-foreground: 222 47% 7%;
+
+    --destructive: 0 63% 55%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 213 80% 62%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Selection highlight */
+  ::selection {
+    @apply bg-primary/20 text-primary;
+  }
+}
+
+/* ─── Utilities ──────────────────────────────────────────────────────────────── */
+
+@layer utilities {
+  /* Brand gradient — used in logo and hero sections */
+  .brand-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(38 92% 45%) 100%);
+  }
+
+  /* Subtle card hover lift */
+  .card-hover {
+    @apply transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md;
+  }
+
+  /* Glass-morphism card (light backdrop) */
+  .glass {
+    @apply backdrop-blur-sm bg-background/80 border border-border/50;
+  }
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-muted/30;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-border rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/40;
+}

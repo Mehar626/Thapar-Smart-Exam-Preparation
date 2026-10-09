@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+  # ── PostgreSQL 16 + pgvector ──────────────────────────────────────────────
+  db:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: tiet
+      POSTGRES_PASSWORD: tiet_secret
+      POSTGRES_DB: tiet_examprep
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U tiet -d tiet_examprep']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ── Next.js Application ───────────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://tiet:tiet_secret@db:5432/tiet_examprep
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-dev-secret-change-in-production}
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
+      DEV_AUTH: ${DEV_AUTH:-true}
+      LLM_PROVIDER: ${LLM_PROVIDER:-gemini}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.0-flash}
+      GEMINI_EMBEDDING_MODEL: ${GEMINI_EMBEDDING_MODEL:-text-embedding-004}
+      STORAGE_DRIVER: ${STORAGE_DRIVER:-local}
+      UPLOAD_DIR: /app/uploads
+      NODE_ENV: development
+    volumes:
+      # Mount source for hot reload in development
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+      - uploads_data:/app/uploads
+    command: sh /app/scripts/docker-entrypoint.sh
+
+volumes:
+  postgres_data:
+  uploads_data:

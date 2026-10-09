@@ -1,0 +1,99 @@
+<mxfile host="app.diagrams.net" modified="2026-10-09T03:00:00.000Z" agent="Antigravity" version="21.0.0" type="device">
+  <diagram id="sequence" name="Sequence Diagram - Grounded RAG Query">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Lifelines (Headers) -->
+        <mxCell id="p_student" value="Student&#xa;(COE-3-3C72)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#dbeafe;strokeColor=#2563eb;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="120" height="680" as="geometry"/>
+        </mxCell>
+        <mxCell id="p_fe" value="Web Frontend&#xa;(Next.js Client)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#f1f5f9;strokeColor=#64748b;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="220" y="40" width="120" height="680" as="geometry"/>
+        </mxCell>
+        <mxCell id="p_api" value="Chat API Route&#xa;(/api/assistant/chat)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#e0e7ff;strokeColor=#4f46e5;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="40" width="140" height="680" as="geometry"/>
+        </mxCell>
+        <mxCell id="p_det" value="Deterministic Engine&#xa;(SQL Pattern Aggregator)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#fef3c7;strokeColor=#d97706;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="40" width="150" height="680" as="geometry"/>
+        </mxCell>
+        <mxCell id="p_db" value="Vector Database&#xa;(PostgreSQL + pgvector)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#dcfce7;strokeColor=#16a34a;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="810" y="40" width="140" height="680" as="geometry"/>
+        </mxCell>
+        <mxCell id="p_llm" value="LLM Provider&#xa;(Gemini / Mock)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#f3e8ff;strokeColor=#9333ea;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="40" width="120" height="680" as="geometry"/>
+        </mxCell>
+
+        <!-- Messages -->
+        <mxCell id="m1" value="1. Enters doubt: 'Compare Agile vs Waterfall in MST'" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#2563eb;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="100" y="110" as="sourcePoint"/>
+            <mxPoint x="280" y="110" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2" value="2. POST /api/assistant/chat { courseId, query, examType }" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#4f46e5;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="280" y="145" as="sourcePoint"/>
+            <mxPoint x="470" y="145" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m3" value="3. Semantic Cosine Search (pgvector query &lt;=&gt; chunks)" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#16a34a;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="470" y="180" as="sourcePoint"/>
+            <mxPoint x="880" y="180" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m4" value="4. Returns Top-K relevant Slide Chunks &amp; past PYQs" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;strokeColor=#16a34a;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="880" y="220" as="sourcePoint"/>
+            <mxPoint x="470" y="220" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m5" value="5. Fetch deterministic stats (marks share, frequency)" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#d97706;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="470" y="260" as="sourcePoint"/>
+            <mxPoint x="675" y="260" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m6" value="6. Returns actual numbers (Agile 60%, 12 marks)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;strokeColor=#d97706;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="675" y="300" as="sourcePoint"/>
+            <mxPoint x="470" y="300" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Frame / Constraint box -->
+        <mxCell id="m_box" value="Grounding Assembly: Combine Slide Chunks + PYQs + Stats&#xa;Enforce Rule: 'Cite exact sources, never invent'" style="shape=note;whiteSpace=wrap;html=1;size=14;verticalAlign=top;align=left;spacingLeft=5;fillColor=#fffbeb;strokeColor=#f59e0b;" vertex="1" parent="1">
+          <mxGeometry x="410" y="335" width="280" height="55" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="m7" value="7. generateContent(GroundedPrompt)" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#9333ea;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="470" y="430" as="sourcePoint"/>
+            <mxPoint x="1060" y="430" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m8" value="8. Streamed cited response ('[Slide 12: Unit 1]', '[MST 2023, Q1a]')" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;strokeColor=#9333ea;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="1060" y="480" as="sourcePoint"/>
+            <mxPoint x="470" y="480" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m9" value="9. Return JSON { responseText, citations: [...] }" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;strokeColor=#4f46e5;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="470" y="530" as="sourcePoint"/>
+            <mxPoint x="280" y="530" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m10" value="10. Render Markdown, KaTeX formulas &amp; clickable citation badges" style="html=1;verticalAlign=bottom;endArrow=open;strokeColor=#2563eb;" edge="1" parent="1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="280" y="575" as="sourcePoint"/>
+            <mxPoint x="100" y="575" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

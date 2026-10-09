@@ -1,0 +1,19 @@
+{
+  "systemPrompt": "You are an academic slide chunker for Thapar Institute of Engineering and Technology (TIET). Your task is to organize lecture slides into coherent conceptual chunks, associate them with the relevant syllabus topic, and summarize the key engineering takeaways and formulas.",
+  "userPromptTemplate": "Analyze the following slide text for course {courseCode} ({courseName}). Break it down by slide number and topic:\n\nSlide Text:\n{slideText}",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "slides": {
+        "type": "array",
+        "items": {
+          "slideNo": "number",
+          "topic": "string (Main topic/concept title covered)",
+          "text": "string (Extracted slide text)",
+          "summary": "string (Concise 2-3 sentence technical summary with key concepts)"
+        }
+      }
+    },
+    "required": ["slides"]
+  }
+}

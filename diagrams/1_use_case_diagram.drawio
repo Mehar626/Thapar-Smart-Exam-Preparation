@@ -1,0 +1,131 @@
+<mxfile host="app.diagrams.net" modified="2026-10-09T03:00:00.000Z" agent="Antigravity" version="21.0.0" type="device">
+  <diagram id="usecase" name="Use Case Diagram">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="950" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- System Boundary -->
+        <mxCell id="boundary" value="TIET Smart Exam-Prep Platform (UCS503 - COE-3-3C72)" style="shape=swimlane;whiteSpace=wrap;html=1;startSize=30;fillColor=#f8fafc;strokeColor=#64748b;fontStyle=1;fontSize=14;align=center;" vertex="1" parent="1">
+          <mxGeometry x="250" y="40" width="840" height="850" as="geometry"/>
+        </mxCell>
+
+        <!-- Actors Left -->
+        <mxCell id="act_student" value="Student&#xa;(COE-3-3C72)" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#dbeafe;strokeColor=#2563eb;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="240" width="50" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="act_contrib" value="Contributor /&#xa;Senior" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#fef3c7;strokeColor=#d97706;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="480" width="50" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="act_cr" value="CR (Batch Rep)" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#e0e7ff;strokeColor=#4f46e5;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="690" width="50" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- Actors Right -->
+        <mxCell id="act_mod" value="Moderator" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#fee2e2;strokeColor=#dc2626;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1190" y="320" width="50" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="act_ai" value="Gemini LLM /&#xa;System Service" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#f3e8ff;strokeColor=#9333ea;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1190" y="580" width="50" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- Student Use Cases -->
+        <mxCell id="uc_login" value="Login with @thapar.edu&#xa;(Role &amp; Batch Enriched)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;fontStyle=0;" vertex="1" parent="boundary">
+          <mxGeometry x="50" y="50" width="180" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="uc_cal" value="View Batch Calendar &amp;&#xa;Readiness Countdown" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;" vertex="1" parent="boundary">
+          <mxGeometry x="50" y="130" width="180" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="uc_qb" value="Explore Question Bank&#xa;(MST/EST/Topic Filters)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;" vertex="1" parent="boundary">
+          <mxGeometry x="50" y="210" width="180" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="uc_practice" value="Practice Mode&#xa;(Scratchpad &amp; Self-Grade)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;" vertex="1" parent="boundary">
+          <mxGeometry x="50" y="290" width="180" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="uc_quiz" value="Attempt Timed 30-Min&#xa;Mock Exam Quiz" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;" vertex="1" parent="boundary">
+          <mxGeometry x="50" y="370" width="180" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="uc_weightage" value="View Topic Weightage&#xa;&amp; Historical Trend Charts" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;" vertex="1" parent="boundary">
+          <mxGeometry x="50" y="450" width="180" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="uc_assistant" value="Interact with TIET-GPT&#xa;(Grounded Citations &amp; Report)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;fontStyle=1;" vertex="1" parent="boundary">
+          <mxGeometry x="50" y="530" width="190" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="uc_forum" value="Participate in Public Forum&#xa;&amp; Live Crunch Chat" style="ellipse;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;" vertex="1" parent="boundary">
+          <mxGeometry x="50" y="615" width="180" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Contributor Use Cases -->
+        <mxCell id="uc_upload" value="Upload Course Materials&#xa;(Slides &amp; PYQs)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fffbeb;strokeColor=#f59e0b;" vertex="1" parent="boundary">
+          <mxGeometry x="50" y="700" width="180" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- CR Use Cases -->
+        <mxCell id="uc_crevent" value="Schedule Batch Event /&#xa;Lab Evaluation" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e0e7ff;strokeColor=#6366f1;" vertex="1" parent="boundary">
+          <mxGeometry x="50" y="780" width="180" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- Ingestion / Processing Use Cases -->
+        <mxCell id="uc_parse" value="Parse &amp; Segment Questions&#xa;&amp; Lecture Slides" style="ellipse;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#a855f7;" vertex="1" parent="boundary">
+          <mxGeometry x="340" y="690" width="190" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="uc_embed" value="Generate Embeddings&#xa;&amp; Store in pgvector" style="ellipse;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#a855f7;" vertex="1" parent="boundary">
+          <mxGeometry x="580" y="650" width="180" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="uc_stats" value="Compute Deterministic&#xa;Weightages &amp; Trends" style="ellipse;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#a855f7;" vertex="1" parent="boundary">
+          <mxGeometry x="580" y="730" width="180" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Moderator Use Cases -->
+        <mxCell id="uc_mod_review" value="Review Staged Questions&#xa;in Moderator Queue (/admin)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fef2f2;strokeColor=#ef4444;fontStyle=1;" vertex="1" parent="boundary">
+          <mxGeometry x="570" y="270" width="200" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="uc_verify_sol" value="Verify Solutions&#xa;(Badge: Verified by Senior)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fef2f2;strokeColor=#ef4444;" vertex="1" parent="boundary">
+          <mxGeometry x="570" y="355" width="200" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="uc_mod_forum" value="Moderate Discussion Forum&#xa;(Pin / Lock / Report)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fef2f2;strokeColor=#ef4444;" vertex="1" parent="boundary">
+          <mxGeometry x="570" y="435" width="200" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Edges: Student -->
+        <mxCell id="e_st_login" edge="1" parent="1" source="act_student" target="uc_login" style="endArrow=none;html=1;strokeColor=#2563eb;"/>
+        <mxCell id="e_st_cal" edge="1" parent="1" source="act_student" target="uc_cal" style="endArrow=none;html=1;strokeColor=#2563eb;"/>
+        <mxCell id="e_st_qb" edge="1" parent="1" source="act_student" target="uc_qb" style="endArrow=none;html=1;strokeColor=#2563eb;"/>
+        <mxCell id="e_st_prac" edge="1" parent="1" source="act_student" target="uc_practice" style="endArrow=none;html=1;strokeColor=#2563eb;"/>
+        <mxCell id="e_st_quiz" edge="1" parent="1" source="act_student" target="uc_quiz" style="endArrow=none;html=1;strokeColor=#2563eb;"/>
+        <mxCell id="e_st_weight" edge="1" parent="1" source="act_student" target="uc_weightage" style="endArrow=none;html=1;strokeColor=#2563eb;"/>
+        <mxCell id="e_st_ast" edge="1" parent="1" source="act_student" target="uc_assistant" style="endArrow=none;html=1;strokeColor=#2563eb;strokeWidth=2;"/>
+        <mxCell id="e_st_forum" edge="1" parent="1" source="act_student" target="uc_forum" style="endArrow=none;html=1;strokeColor=#2563eb;"/>
+
+        <!-- Edges: Contributor -->
+        <mxCell id="e_cb_up" edge="1" parent="1" source="act_contrib" target="uc_upload" style="endArrow=none;html=1;strokeColor=#d97706;"/>
+
+        <!-- Edges: CR -->
+        <mxCell id="e_cr_ev" edge="1" parent="1" source="act_cr" target="uc_crevent" style="endArrow=none;html=1;strokeColor=#4f46e5;"/>
+
+        <!-- Edges: Mod -->
+        <mxCell id="e_md_rev" edge="1" parent="1" source="act_mod" target="uc_mod_review" style="endArrow=none;html=1;strokeColor=#dc2626;strokeWidth=2;"/>
+        <mxCell id="e_md_sol" edge="1" parent="1" source="act_mod" target="uc_verify_sol" style="endArrow=none;html=1;strokeColor=#dc2626;"/>
+        <mxCell id="e_md_fm" edge="1" parent="1" source="act_mod" target="uc_mod_forum" style="endArrow=none;html=1;strokeColor=#dc2626;"/>
+
+        <!-- Edges: AI &amp; Pipeline relationships -->
+        <mxCell id="e_ai_ast" edge="1" parent="1" source="act_ai" target="uc_assistant" style="endArrow=classic;dashed=1;html=1;strokeColor=#9333ea;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_up_parse" edge="1" parent="boundary" source="uc_upload" target="uc_parse" style="endArrow=open;dashed=1;html=1;strokeColor=#64748b;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_parse_mod" edge="1" parent="boundary" source="uc_parse" target="uc_mod_review" style="endArrow=open;dashed=1;html=1;strokeColor=#64748b;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_mod_emb" edge="1" parent="boundary" source="uc_mod_review" target="uc_embed" style="endArrow=open;dashed=1;html=1;strokeColor=#64748b;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_mod_st" edge="1" parent="boundary" source="uc_mod_review" target="uc_stats" style="endArrow=open;dashed=1;html=1;strokeColor=#64748b;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

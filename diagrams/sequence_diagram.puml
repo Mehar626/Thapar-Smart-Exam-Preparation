@@ -1,0 +1,26 @@
+@startuml
+autonumber
+actor "Student (3C72)" as Student
+participant "Web Frontend\n(Next.js App)" as UI
+participant "API Route\n(/api/assistant/chat)" as API
+participant "Deterministic Engine\n(SQL/Code)" as DetEngine
+participant "Vector DB\n(PostgreSQL pgvector)" as DB
+participant "LLM Provider\n(Gemini / Mock)" as LLM
+
+Student -> UI : Asks question ("Compare Agile & Waterfall in MST 2023")
+UI -> API : POST /api/assistant/chat { courseId, query, examType="MST" }
+
+API -> DB : Semantic similarity search (query embedding <=> pgvector)
+DB --> API : Top-K relevant slide chunks + past PYQs
+
+API -> DetEngine : Fetch historical marks & topic frequency
+DetEngine --> API : Deterministic stats (60% Agile share, 10 marks)
+
+API -> API : Construct Grounded Prompt:\n1. System constraints\n2. Retrieved slides & PYQ context\n3. Deterministic stats\n4. Strict rule: 'Cite exact slides, do not invent'
+
+API -> LLM : generateContent(GroundedPrompt)
+LLM --> API : Streamed response with citations\n('[Slide 12: Unit 1]', '[MST 2023, Q1a]')
+
+API --> UI : JSON payload { responseText, citations: [...] }
+UI -> Student : Render KaTeX math, Markdown & clickable citation chips
+@enduml

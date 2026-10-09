@@ -1,0 +1,47 @@
+graph TD
+    E1["Student (Batch: COE-3-3C72)"]
+    E2["Contributor / Senior"]
+    E3["Moderator / CR"]
+    E4["Gemini LLM API"]
+
+    P1["1.0 Auth & Batch Context Filtering"]
+    P2["2.0 Ingestion, OCR & Auto-Tagging"]
+    P3["3.0 Moderator Review & Quality Control"]
+    P4["4.0 Embedding & Deterministic Analytics Engine"]
+    P5["5.0 Question Bank & Practice Session Runner"]
+    P6["6.0 Hybrid Retrieval & Grounded AI Assistant"]
+    P7["7.0 Academic Calendar & Forum Engine"]
+
+    D1[("D1: Users & Batches")]
+    D2[("D2: Raw Uploads / PDF Storage")]
+    D3[("D3: Questions & Solutions (pgvector)")]
+    D4[("D4: Topic Weightage & Pattern Reports")]
+    D5[("D5: Calendar Events & Forum Threads")]
+
+    E1 -->|Credentials| P1
+    P1 -->|Fetch Batch Info| D1
+    
+    E2 -->|Upload PDF / PYQs| P2
+    P2 -->|Save File| D2
+    P2 -->|Staged Questions| P3
+    P2 -.->|Tagging Request| E4
+    
+    E3 -->|Approve / Modify Tags| P3
+    P3 -->|Approved Entities| P4
+    P4 -.->|Generate Vectors| E4
+    P4 -->|Store Vectors & Chunks| D3
+    P4 -->|Update SQL Aggregates| D4
+    
+    E1 -->|Practice Filter / Attempt| P5
+    P5 -->|Read PYQs & Solutions| D3
+    P5 -->|Log Scorecard & Weak Topics| D1
+    
+    E1 -->|Query / Doubt Prompt| P6
+    P6 -->|Vector Similarity Query| D3
+    P6 -->|Fetch Precomputed Stats| D4
+    P6 -.->|Grounded Prompt with Citations| E4
+    P6 -->|Verified Cited Answer| E1
+    
+    E3 -->|Add Batch Lab Eval / MST| P7
+    P7 -->|Write Schedule| D5
+    D5 -->|Filtered Calendar & Discussions| E1

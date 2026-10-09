@@ -1,0 +1,403 @@
+// ─── Prisma Schema — TIET ExamPrep Platform ──────────────────────────────────
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum Role {
+  STUDENT
+  CONTRIBUTOR
+  MODERATOR
+  CR // Class Representative
+}
+
+enum DocType {
+  PYQ
+  QUIZ
+  SESSIONAL
+  SLIDES
+  SYLLABUS
+  SOLUTION
+}
+
+enum DocStatus {
+  QUEUED
+  PARSING
+  NEEDS_REVIEW
+  APPROVED
+  REJECTED
+}
+
+enum EvalType {
+  QUIZ
+  SESSIONAL
+  MST
+  EST
+  LAB_EVAL
+  VIVA
+}
+
+enum QuestionType {
+  MCQ
+  SHORT
+  LONG
+  NUMERICAL
+  CODING
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum AuthorType {
+  AI
+  USER
+  MODERATOR
+}
+
+enum EventType {
+  LAB_EVAL
+  QUIZ
+  SESSIONAL
+  MST
+  EST
+  ASSIGNMENT
+  VIVA
+  HOLIDAY
+}
+
+// ─── Core Models ─────────────────────────────────────────────────────────────
+
+model User {
+  id           String  @id @default(cuid())
+  name         String
+  email        String  @unique
+  passwordHash String?
+  role         Role    @default(STUDENT)
+
+  batchId String?
+  batch   Batch?  @relation(fields: [batchId], references: [id])
+
+  enrollments      Enrollment[]
+  uploads          Document[]        @relation("UploadedDocs")
+  solutions        Solution[]
+  practiceSessions PracticeSession[]
+  forumThreads     ForumThread[]
+  forumPosts       ForumPost[]
+  votes            SolutionVote[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Batch {
+  id     String @id @default(cuid())
+  branch String // e.g. "COE"
+  year   Int    // 1 to 4
+  group  String // e.g. "2C12"
+
+  users  User[]
+  events CalendarEvent[]
+
+  @@unique([branch, year, group])
+  @@map("batches")
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  code        String   @unique // e.g. "UCS503"
+  name        String   // "Software Engineering"
+  dept        String   // "Computer Science & Engineering"
+  semester    Int      // 1-8
+
+  enrollments     Enrollment[]
+  documents       Document[]
+  questions       Question[]
+  slideChunks     SlideChunk[]
+  syllabusUnits   SyllabusUnit[]
+  topicWeightages TopicWeightage[]
+  calendarEvents  CalendarEvent[]
+  forumThreads    ForumThread[]
+  patternReports  PatternReport[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("courses")
+}
+
+model Enrollment {
+  id       String @id @default(cuid())
+  userId   String
+  courseId String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  enrolledAt DateTime @default(now())
+
+  @@unique([userId, courseId])
+  @@map("enrollments")
+}
+
+model SyllabusUnit {
+  id          String   @id @default(cuid())
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  unitNumber  Int
+  title       String
+  description String?
+  topics      SyllabusTopic[]
+
+  @@unique([courseId, unitNumber])
+  @@map("syllabus_units")
+}
+
+model SyllabusTopic {
+  id          String       @id @default(cuid())
+  unitId      String
+  unit        SyllabusUnit @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  title       String
+  order       Int
+  description String?
+
+  @@map("syllabus_topics")
+}
+
+model Document {
+  id              String    @id @default(cuid())
+  courseId        String
+  course          Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  uploaderId      String
+  uploader        User      @relation("UploadedDocs", fields: [uploaderId], references: [id])
+  title           String
+  type            DocType
+  fileUrl         String
+  fileSize        Int       @default(0)
+  evalType        EvalType?
+  year            Int?
+  session         String?   // "Odd" / "Even"
+  status          DocStatus @default(QUEUED)
+  rejectionReason String?
+  metadata        Json?
+
+  questions   Question[]
+  slideChunks SlideChunk[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("documents")
+}
+
+model Question {
+  id             String       @id @default(cuid())
+  courseId       String
+  course         Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  sourceDocId    String?
+  sourceDocument Document?    @relation(fields: [sourceDocId], references: [id], onDelete: SetNull)
+  evalType       EvalType
+  year           Int
+  session        String?
+  marks          Float        @default(5.0)
+  type           QuestionType @default(SHORT)
+  difficulty     Difficulty   @default(MEDIUM)
+  text           String       // Markdown + LaTeX
+  questionNumber String?      // e.g. "Q1(a)"
+  topicTags      String[]     // e.g. ["Agile", "Scrum"]
+  isApproved     Boolean      @default(false)
+  confidence     Float?       @default(1.0)
+  embedding      Json?        // Vector embedding serialized as JSON array
+
+  solutions        Solution[]
+  practiceAttempts PracticeAttempt[]
+  forumThreads     ForumThread[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("questions")
+}
+
+model Solution {
+  id          String     @id @default(cuid())
+  questionId  String
+  question    Question   @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  authorId    String?
+  author      User?      @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  authorType  AuthorType @default(AI)
+  content     String     // Step-by-step markdown + KaTeX
+  isVerified  Boolean    @default(false)
+  verifiedBy  String?
+  upvotes     Int        @default(0)
+  downvotes   Int        @default(0)
+
+  votes SolutionVote[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("solutions")
+}
+
+model SolutionVote {
+  id         String   @id @default(cuid())
+  solutionId String
+  userId     String
+  isUpvote   Boolean
+  solution   Solution @relation(fields: [solutionId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([solutionId, userId])
+  @@map("solution_votes")
+}
+
+model SlideChunk {
+  id         String   @id @default(cuid())
+  courseId   String
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  slideNo    Int
+  topic      String?
+  text       String
+  embedding  Json?
+
+  createdAt DateTime @default(now())
+
+  @@map("slide_chunks")
+}
+
+model TopicWeightage {
+  id             String   @id @default(cuid())
+  courseId       String
+  course         Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  evalType       EvalType
+  topic          String
+  frequencyScore Float    // Percentage of papers topic appeared in (0-100)
+  marksShare     Float    // Percentage of total marks (0-100)
+  yearTrend      Json     // Array of { year: number, marks: number, count: number }
+  lastUpdated    DateTime @default(now())
+
+  @@unique([courseId, evalType, topic])
+  @@map("topic_weightages")
+}
+
+model CalendarEvent {
+  id               String    @id @default(cuid())
+  courseId         String
+  course           Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  batchId          String?
+  batch            Batch?    @relation(fields: [batchId], references: [id], onDelete: SetNull)
+  title            String
+  type             EventType
+  start            DateTime
+  end              DateTime?
+  venue            String?
+  syllabusTopicIds String[]
+  weightage        Float?
+  notes            String?
+  isApproved       Boolean   @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("calendar_events")
+}
+
+model PracticeSession {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId   String
+  evalType   EvalType?
+  startedAt  DateTime  @default(now())
+  endedAt    DateTime?
+  totalScore Float?
+
+  attempts PracticeAttempt[]
+
+  @@map("practice_sessions")
+}
+
+model PracticeAttempt {
+  id         String          @id @default(cuid())
+  sessionId  String
+  session    PracticeSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  questionId String
+  question   Question        @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  userAnswer String?
+  isCorrect  Boolean?
+  selfMarks  Float?
+  timeSpent  Int?            // seconds
+  createdAt  DateTime        @default(now())
+
+  @@map("practice_attempts")
+}
+
+model ForumThread {
+  id             String      @id @default(cuid())
+  courseId       String?     // null = General TIET board
+  course         Course?     @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  questionId     String?     // Linked PYQ if created via "Discuss this question"
+  question       Question?   @relation(fields: [questionId], references: [id], onDelete: SetNull)
+  authorId       String
+  author         User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  title          String
+  content        String
+  tags           String[]
+  isPinned       Boolean     @default(false)
+  isLocked       Boolean     @default(false)
+  acceptedPostId String?
+  views          Int         @default(0)
+
+  posts ForumPost[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("forum_threads")
+}
+
+model ForumPost {
+  id            String      @id @default(cuid())
+  threadId      String
+  thread        ForumThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  authorId      String
+  author        User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  content       String
+  isAccepted    Boolean     @default(false)
+  isAiGenerated Boolean     @default(false)
+  citations     Json?
+  upvotes       Int         @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("forum_posts")
+}
+
+model PatternReport {
+  id                  String   @id @default(cuid())
+  courseId            String
+  course              Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  evalType            EvalType
+  generatedAt         DateTime @default(now())
+  statsJson           Json
+  changeDetectionJson Json
+  likelyTopicsJson    Json
+  suggestedQuestions  Json
+
+  @@unique([courseId, evalType])
+  @@map("pattern_reports")
+}
